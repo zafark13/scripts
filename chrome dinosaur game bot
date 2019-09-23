@@ -1,0 +1,52 @@
+import time
+from PIL import ImageGrab,ImageOps
+import pyautogui
+from numpy import *
+
+
+class cordinates:
+    rstart=(384,370)
+    dino=(207,469 )
+
+b=0.165
+def restart():
+    pyautogui.click(cordinates.rstart )
+
+def space(a):
+    global b
+
+    #if(b<0):
+     #   b=0.0005999999999998554
+    if(b>0.0009):
+        b = b - 0.0009
+    #time.sleep(0.005)
+    pyautogui.keyUp('down')
+    pyautogui.keyDown('space')
+    time.sleep(b)
+    pyautogui.keyUp('space')
+    pyautogui.keyDown('down')
+    print(b)
+
+def imageGrab():
+    global v,d,b
+    box=(v,465,d,508)
+    img=ImageGrab.grab(box)
+    gray= ImageOps.grayscale(img)
+    a=array(gray.getcolors())
+    print(a.sum())
+    if(a.sum()!=1967):
+        v=v+1.25
+        d=d+1.25
+    return a.sum()
+
+v=280
+d=320
+
+def main():
+     restart()
+     while True:
+        a=imageGrab()
+        if(a !=1967):
+            space(a )
+
+main()
